@@ -1,7 +1,6 @@
 FROM buildpack-deps:stretch
 LABEL maintainer="Peter Martini <PeterCMartini@GMail.com>, Zak B. Elep <zakame@cpan.org>"
 
-COPY *.patch /usr/src/perl/
 WORKDIR /usr/src/perl
 
 RUN true \
@@ -9,7 +8,6 @@ RUN true \
     && echo '19d4fb0eac9dd5d36f44ce146a18dc81eac241a415bb42e58fddf75b61f585f7 *perl-5.30.0-RC1.tar.xz' | sha256sum -c - \
     && tar --strip-components=1 -xaf perl-5.30.0-RC1.tar.xz -C /usr/src/perl \
     && rm perl-5.30.0-RC1.tar.xz \
-    && cat *.patch | patch -p1 \
     && gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
     && archBits="$(dpkg-architecture --query DEB_BUILD_ARCH_BITS)" \
     && archFlag="$([ "$archBits" = '64' ] && echo '-Duse64bitall' || echo '-Duse64bitint')" \
